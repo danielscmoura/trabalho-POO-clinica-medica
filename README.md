@@ -1,1 +1,0 @@
-# trabalho-POO-clinica-medica
