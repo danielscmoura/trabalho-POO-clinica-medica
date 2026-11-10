@@ -5,6 +5,11 @@
  */
 package br.com.visao;
 
+import br.com.visao.convenios.CadastroConvenios;
+import br.com.visao.convenios.DeletarConvenios;
+import br.com.visao.convenios.EditarConvenios;
+import br.com.visao.convenios.ListarConvenios;
+
 /**
  *
  * @author danielscmoura
@@ -32,12 +37,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMcadastroPacientes = new javax.swing.JMenuItem();
+        jMcadastroConvenios = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMeditarPacientes = new javax.swing.JMenuItem();
+        jMeditarConvenios = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMlistarPacientes = new javax.swing.JMenuItem();
+        jMlistarConvenios = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMdeletarPacientes = new javax.swing.JMenuItem();
+        jMdeletarConvenios = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMrelatorioConsultas = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -53,6 +64,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMcadastroPacientes);
 
+        jMcadastroConvenios.setText("Convênio");
+        jMcadastroConvenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMcadastroConveniosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMcadastroConvenios);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
@@ -64,6 +83,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMeditarPacientes);
+
+        jMeditarConvenios.setText("Convênio");
+        jMeditarConvenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMeditarConveniosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMeditarConvenios);
 
         jMenuBar1.add(jMenu2);
 
@@ -77,6 +104,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMlistarPacientes);
 
+        jMlistarConvenios.setText("Convênio");
+        jMlistarConvenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMlistarConveniosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMlistarConvenios);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Deletar");
@@ -89,7 +124,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu4.add(jMdeletarPacientes);
 
+        jMdeletarConvenios.setText("Convênio");
+        jMdeletarConvenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMdeletarConveniosActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMdeletarConvenios);
+
         jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Relatórios");
+
+        jMrelatorioConsultas.setText("Consultas");
+        jMrelatorioConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMrelatorioConsultasActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMrelatorioConsultas);
+
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -113,11 +168,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         ca.show();
     }//GEN-LAST:event_jMcadastroPacientesActionPerformed
 
+    private void jMcadastroConveniosActionPerformed(java.awt.event.ActionEvent evt) {
+        new CadastroConvenios().setVisible(true);
+    }
+
     private void jMeditarPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMeditarPacientesActionPerformed
         // TODO add your handling code here:
         EditarPacientes ed = new EditarPacientes();
         ed.show();
     }//GEN-LAST:event_jMeditarPacientesActionPerformed
+
+    private void jMeditarConveniosActionPerformed(java.awt.event.ActionEvent evt) {
+        new EditarConvenios().setVisible(true);
+    }
 
     private void jMlistarPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMlistarPacientesActionPerformed
         // TODO add your handling code here:
@@ -125,11 +188,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
         ca.show();
     }//GEN-LAST:event_jMlistarPacientesActionPerformed
 
+    private void jMlistarConveniosActionPerformed(java.awt.event.ActionEvent evt) {
+        new ListarConvenios().setVisible(true);
+    }
+
     private void jMdeletarPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMdeletarPacientesActionPerformed
         // TODO add your handling code here:
         DeletarPacientes dl = new DeletarPacientes();
         dl.show();
     }//GEN-LAST:event_jMdeletarPacientesActionPerformed
+
+    private void jMdeletarConveniosActionPerformed(java.awt.event.ActionEvent evt) {
+        new DeletarConvenios().setVisible(true);
+    }
+
+    private void jMrelatorioConsultasActionPerformed(java.awt.event.ActionEvent evt) {
+        new TelaRelatorioConsultas().setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -168,15 +243,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMcadastroPacientes;
+    private javax.swing.JMenuItem jMcadastroConvenios;
     private javax.swing.JMenuItem jMdeletarPacientes;
+    private javax.swing.JMenuItem jMdeletarConvenios;
     private javax.swing.JMenuItem jMeditarPacientes;
+    private javax.swing.JMenuItem jMeditarConvenios;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMlistarPacientes;
+    private javax.swing.JMenuItem jMlistarConvenios;
+    private javax.swing.JMenuItem jMrelatorioConsultas;
     private javax.swing.JPopupMenu jPopupMenu1;
     // End of variables declaration//GEN-END:variables
 }
