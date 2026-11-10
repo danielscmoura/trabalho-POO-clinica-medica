@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/** Tela Swing responsável pelo cadastro de novos convênios. */
 public class CadastroConvenios extends JFrame {
 
     private final JTextField campoNome = new JTextField(25);
@@ -27,7 +28,9 @@ public class CadastroConvenios extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Monta os campos e associa os botões aos métodos da tela. */
     private void montarTela() {
+        // GridBagLayout organiza rótulos e campos em linhas e colunas.
         JPanel campos = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
         restricoes.insets = new Insets(8, 8, 8, 8);
@@ -65,12 +68,15 @@ public class CadastroConvenios extends JFrame {
         add(botoes, BorderLayout.SOUTH);
     }
 
+    /** Lê os campos da tela, cria o Model Convenio e solicita a inclusão no banco. */
     private void cadastrar() {
+        // A View transforma o texto dos campos em um objeto do Model.
         Convenio convenio = new Convenio();
         convenio.setNome(campoNome.getText().trim());
         convenio.setTelefone(campoTelefone.getText().trim());
 
         try {
+            // A regra e o SQL ficam fora da tela, na classe ManterConvenio.
             new ManterConvenio().inserirConvenio(convenio);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -79,6 +85,7 @@ public class CadastroConvenios extends JFrame {
         }
     }
 
+    /** Limpa os campos para permitir um novo cadastro. */
     private void limpar() {
         campoNome.setText("");
         campoTelefone.setText("");

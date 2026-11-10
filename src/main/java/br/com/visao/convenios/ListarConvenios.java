@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+/** Tela Swing que pesquisa e exibe os convênios em uma tabela não editável. */
 public class ListarConvenios extends JFrame {
 
     private final JTextField campoNome = new JTextField(20);
@@ -38,6 +39,7 @@ public class ListarConvenios extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Monta os filtros de pesquisa, a tabela de resultados e o botão de fechar. */
     private void montarTela() {
         JPanel filtros = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
@@ -73,13 +75,18 @@ public class ListarConvenios extends JFrame {
         add(botoes, BorderLayout.SOUTH);
     }
 
+    /**
+     * Envia os filtros digitados ao ManterConvenio e preenche a JTable com a lista retornada.
+     */
     private void pesquisar() {
+        // Evita manter resultados da pesquisa anterior na tabela.
         modeloTabela.setRowCount(0);
 
         try {
             ArrayList<Convenio> convenios = new ManterConvenio().pesquisar(
                     campoNome.getText().trim(), campoTelefone.getText().trim());
 
+            // Cada objeto retornado pelo banco é incluído como uma linha da JTable.
             for (Convenio convenio : convenios) {
                 modeloTabela.addRow(new Object[]{
                     convenio.getId(), convenio.getNome(), convenio.getTelefone()

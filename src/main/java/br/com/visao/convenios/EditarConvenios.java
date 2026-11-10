@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/** Tela Swing usada para buscar um convênio pelo ID e alterar seus dados. */
 public class EditarConvenios extends JFrame {
 
     private final JTextField campoId = new JTextField(8);
@@ -29,6 +30,7 @@ public class EditarConvenios extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Monta os campos de busca, edição e os botões da tela. */
     private void montarTela() {
         JPanel campos = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
@@ -77,7 +79,9 @@ public class EditarConvenios extends JFrame {
         add(botoes, BorderLayout.SOUTH);
     }
 
+    /** Busca o convênio pelo ID e carrega os dados encontrados nos campos de edição. */
     private void buscar() {
+        // Primeiro valida e converte o ID digitado antes de pesquisar no banco.
         Integer idInformado = lerId();
         if (idInformado == null) {
             return;
@@ -88,6 +92,7 @@ public class EditarConvenios extends JFrame {
 
         try {
             if (new ManterConvenio().pesquisarConvenio(convenio)) {
+                // Guarda o ID para garantir que o UPDATE altere o mesmo registro pesquisado.
                 idConvenio = convenio.getId();
                 campoNome.setText(convenio.getNome());
                 campoTelefone.setText(convenio.getTelefone());
@@ -99,12 +104,14 @@ public class EditarConvenios extends JFrame {
         }
     }
 
+    /** Envia as alterações do convênio selecionado para o banco de dados. */
     private void salvar() {
         if (idConvenio == 0) {
             JOptionPane.showMessageDialog(this, "Busque um convênio antes de salvar.");
             return;
         }
 
+        // Cria um objeto com o ID original e os valores que o usuário alterou na tela.
         Convenio convenio = new Convenio(idConvenio,
                 campoNome.getText().trim(), campoTelefone.getText().trim());
 
@@ -117,8 +124,10 @@ public class EditarConvenios extends JFrame {
         }
     }
 
+    /** Converte o texto digitado em ID numérico e trata entradas inválidas. */
     private Integer lerId() {
         try {
+            // Integer.valueOf pode gerar erro se o texto não for numérico.
             return Integer.valueOf(campoId.getText().trim());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Informe um ID numérico válido.");
@@ -126,6 +135,7 @@ public class EditarConvenios extends JFrame {
         }
     }
 
+    /** Limpa os campos e remove o ID do convênio que estava selecionado. */
     private void limpar() {
         idConvenio = 0;
         campoId.setText("");

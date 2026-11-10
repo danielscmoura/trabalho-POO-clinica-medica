@@ -1,5 +1,9 @@
 package br.com.controle;
 
+/**
+ * Model de leitura: representa uma linha já pronta para ser exibida no relatório.
+ * Não corresponde a uma nova tabela; reúne campos vindos de várias tabelas do JOIN.
+ */
 public class LinhaRelatorioConsulta {
 
     private final int id;
@@ -11,6 +15,9 @@ public class LinhaRelatorioConsulta {
     private final String horario;
     private final String situacao;
 
+    /**
+     * Recebe os dados de uma consulta retornada pelo JOIN e monta a linha do relatório.
+     */
     public LinhaRelatorioConsulta(int id, String paciente, String profissional,
             String especialidade, String convenio, String data, String horario,
             String situacao) {

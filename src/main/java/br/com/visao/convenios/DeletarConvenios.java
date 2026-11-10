@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/** Tela Swing que localiza um convênio pelo ID e confirma sua exclusão. */
 public class DeletarConvenios extends JFrame {
 
     private final JTextField campoId = new JTextField(8);
@@ -29,6 +30,7 @@ public class DeletarConvenios extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Monta a tela e deixa os dados do convênio somente para leitura antes da exclusão. */
     private void montarTela() {
         campoNome.setEditable(false);
         campoTelefone.setEditable(false);
@@ -80,7 +82,9 @@ public class DeletarConvenios extends JFrame {
         add(botoes, BorderLayout.SOUTH);
     }
 
+    /** Busca o convênio pelo ID e o mantém selecionado para uma possível exclusão. */
     private void buscar() {
+        // Só é possível excluir depois de localizar um registro válido pelo ID.
         Integer idInformado = lerId();
         if (idInformado == null) {
             return;
@@ -91,6 +95,7 @@ public class DeletarConvenios extends JFrame {
 
         try {
             if (new ManterConvenio().pesquisarConvenio(convenio)) {
+                // Mantém o objeto selecionado para excluir exatamente o registro exibido.
                 convenioSelecionado = convenio;
                 campoNome.setText(convenio.getNome());
                 campoTelefone.setText(convenio.getTelefone());
@@ -102,12 +107,14 @@ public class DeletarConvenios extends JFrame {
         }
     }
 
+    /** Pede confirmação ao usuário e solicita a exclusão do convênio selecionado. */
     private void excluir() {
         if (convenioSelecionado == null) {
             JOptionPane.showMessageDialog(this, "Busque um convênio antes de excluir.");
             return;
         }
 
+        // A confirmação evita exclusões acidentais.
         int resposta = JOptionPane.showConfirmDialog(this,
                 "Deseja realmente excluir o convênio " + convenioSelecionado.getNome() + "?",
                 "Confirmar exclusão", JOptionPane.YES_NO_OPTION);
@@ -117,6 +124,7 @@ public class DeletarConvenios extends JFrame {
         }
 
         try {
+            // A classe de negócio também trata o caso de convênio ligado a consultas.
             new ManterConvenio().deletarConvenio(convenioSelecionado);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -125,6 +133,7 @@ public class DeletarConvenios extends JFrame {
         }
     }
 
+    /** Converte o texto digitado em ID numérico e trata entradas inválidas. */
     private Integer lerId() {
         try {
             return Integer.valueOf(campoId.getText().trim());
@@ -134,6 +143,7 @@ public class DeletarConvenios extends JFrame {
         }
     }
 
+    /** Limpa os campos e desfaz a seleção atual. */
     private void limpar() {
         convenioSelecionado = null;
         campoId.setText("");

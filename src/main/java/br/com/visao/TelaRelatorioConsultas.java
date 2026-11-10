@@ -22,6 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Tela Swing do relatório: permite filtrar consultas por paciente ou profissional,
+ * exibe o resultado do JOIN e informa o total encontrado.
+ */
 public class TelaRelatorioConsultas extends JFrame {
 
     private final JRadioButton opcaoPaciente = new JRadioButton("Paciente", true);
@@ -50,7 +54,9 @@ public class TelaRelatorioConsultas extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Monta os filtros, a tabela de resultados, o total e os botões da tela. */
     private void montarTela() {
+        // ButtonGroup garante que somente um dos dois tipos de filtro fique selecionado.
         ButtonGroup grupoFiltro = new ButtonGroup();
         grupoFiltro.add(opcaoPaciente);
         grupoFiltro.add(opcaoProfissional);
@@ -81,6 +87,7 @@ public class TelaRelatorioConsultas extends JFrame {
         restricoes.gridwidth = 1;
         filtros.add(botaoGerar, restricoes);
 
+        // O sorter permite ordenar as colunas ao clicar no cabeçalho da JTable.
         JTable tabela = new JTable(modeloTabela);
         tabela.setAutoCreateRowSorter(true);
         tabela.setPreferredScrollableViewportSize(new Dimension(1000, 300));
@@ -103,8 +110,13 @@ public class TelaRelatorioConsultas extends JFrame {
         add(rodape, BorderLayout.SOUTH);
     }
 
+    /**
+     * Identifica o filtro escolhido, executa a busca do relatório e preenche a tabela.
+     * O total exibido é a quantidade de linhas retornadas pela consulta SQL.
+     */
     private void gerarRelatorio() {
         String nome = campoNome.getText().trim();
+        // Sem nome não existe critério para filtrar o relatório.
         if (nome.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Informe o nome para o filtro.");
             return;
@@ -116,12 +128,14 @@ public class TelaRelatorioConsultas extends JFrame {
             RelatorioConsultas relatorio = new RelatorioConsultas();
             ArrayList<LinhaRelatorioConsulta> linhas;
 
+            // A opção marcada decide qual método e qual coluna do JOIN serão usados.
             if (opcaoPaciente.isSelected()) {
                 linhas = relatorio.buscarPorPaciente(nome);
             } else {
                 linhas = relatorio.buscarPorProfissional(nome);
             }
 
+            // Transforma cada objeto de resultado em uma linha visível na tabela.
             for (LinhaRelatorioConsulta linha : linhas) {
                 modeloTabela.addRow(new Object[]{
                     linha.getId(), linha.getPaciente(), linha.getProfissional(),
@@ -130,6 +144,7 @@ public class TelaRelatorioConsultas extends JFrame {
                 });
             }
 
+            // O total é a quantidade de registros retornados pela busca filtrada.
             labelTotal.setText("Total de consultas: " + linhas.size());
 
             if (linhas.isEmpty()) {
@@ -142,6 +157,7 @@ public class TelaRelatorioConsultas extends JFrame {
         }
     }
 
+    /** Limpa o filtro, remove os resultados atuais e reinicia o total exibido. */
     private void limpar() {
         campoNome.setText("");
         modeloTabela.setRowCount(0);
