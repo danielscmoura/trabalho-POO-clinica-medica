@@ -1,0 +1,15 @@
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/controle/Especialidade.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/controle/Paciente.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/entidade/DAO.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/entidade/ManterEspecialidade.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/entidade/ManterPaciente.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/entidade/TesteConexao.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/CadastroEspecialidades.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/CadastroPacientes.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/DeletarEspecialidades.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/DeletarPacientes.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/EditarEspecialidades.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/EditarPacientes.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/ListarEspecialidades.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/ListarPacientes.java
+/home/helenna/Documentos/POO/trabalho-POO-clinica-medica-especialidades/trabalho-POO-clinica-medica-main/src/main/java/br/com/visao/TelaPrincipal.java
