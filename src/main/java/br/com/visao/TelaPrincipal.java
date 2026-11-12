@@ -49,6 +49,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMdeletarConvenios = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMrelatorioConsultas = new javax.swing.JMenuItem();
+        jMcadastroEspecialidades = new javax.swing.JMenuItem();
+        jMeditarEspecialidades = new javax.swing.JMenuItem();
+        jMlistarEspecialidades = new javax.swing.JMenuItem();
+        jMdeletarEspecialidades = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -81,6 +85,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMcadastroConsultas);
 
+        jMcadastroEspecialidades.setText("Especialidade");
+        jMcadastroEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMcadastroEspecialidadesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMcadastroEspecialidades);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
@@ -109,6 +121,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMeditarConsultas);
+
+        jMeditarEspecialidades.setText("Especialidade");
+        jMeditarEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMeditarEspecialidadesActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMeditarEspecialidades);
 
         jMenuBar1.add(jMenu2);
 
@@ -139,6 +159,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMlistarConsultas);
 
+        jMlistarEspecialidades.setText("Especialidade");
+        jMlistarEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMlistarEspecialidadesActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMlistarEspecialidades);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Deletar");
@@ -167,6 +195,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMdeletarConsultas);
+
+        jMdeletarEspecialidades.setText("Especialidade");
+        jMdeletarEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMdeletarEspecialidadesActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMdeletarEspecialidades);
 
         jMenuBar1.add(jMenu4);
 
@@ -242,6 +278,44 @@ public class TelaPrincipal extends javax.swing.JFrame {
         new TelaRelatorioConsultas().setVisible(true);
     }
 
+    // ---- Especialidade: cada tela abre uma única vez (se já aberta, vem para a frente) ----
+    private CadastroEspecialidades telaCadastroEspecialidades;
+    private EditarEspecialidades telaEditarEspecialidades;
+    private ListarEspecialidades telaListarEspecialidades;
+    private DeletarEspecialidades telaDeletarEspecialidades;
+
+    private void jMcadastroEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {
+        if (telaCadastroEspecialidades == null || !telaCadastroEspecialidades.isDisplayable()) {
+            telaCadastroEspecialidades = new CadastroEspecialidades();
+        }
+        telaCadastroEspecialidades.setVisible(true);
+        telaCadastroEspecialidades.toFront();
+    }
+
+    private void jMeditarEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {
+        if (telaEditarEspecialidades == null || !telaEditarEspecialidades.isDisplayable()) {
+            telaEditarEspecialidades = new EditarEspecialidades();
+        }
+        telaEditarEspecialidades.setVisible(true);
+        telaEditarEspecialidades.toFront();
+    }
+
+    private void jMlistarEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {
+        if (telaListarEspecialidades == null || !telaListarEspecialidades.isDisplayable()) {
+            telaListarEspecialidades = new ListarEspecialidades();
+        }
+        telaListarEspecialidades.setVisible(true);
+        telaListarEspecialidades.toFront();
+    }
+
+    private void jMdeletarEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {
+        if (telaDeletarEspecialidades == null || !telaDeletarEspecialidades.isDisplayable()) {
+            telaDeletarEspecialidades = new DeletarEspecialidades();
+        }
+        telaDeletarEspecialidades.setVisible(true);
+        telaDeletarEspecialidades.toFront();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -299,5 +373,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMeditarConsultas;
     private javax.swing.JMenuItem jMlistarConsultas;
     private javax.swing.JMenuItem jMdeletarConsultas;
+    private javax.swing.JMenuItem jMcadastroEspecialidades;
+    private javax.swing.JMenuItem jMeditarEspecialidades;
+    private javax.swing.JMenuItem jMlistarEspecialidades;
+    private javax.swing.JMenuItem jMdeletarEspecialidades;
     // End of variables declaration//GEN-END:variables
 }
