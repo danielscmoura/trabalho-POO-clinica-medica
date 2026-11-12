@@ -36,4 +36,20 @@ public class Especialidade {
     public String toString() {
         return nome;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Especialidade)) {
+            return false;
+        }
+        return this.id == ((Especialidade) obj).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }

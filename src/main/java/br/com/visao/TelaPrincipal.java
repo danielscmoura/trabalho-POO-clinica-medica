@@ -93,6 +93,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMcadastroEspecialidades);
 
+        jMcadastroProfissionais = new javax.swing.JMenuItem();
+        jMcadastroProfissionais.setText("Profissional");
+        jMcadastroProfissionais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.CadastroProfissionais().setVisible(true);
+            }
+        });
+        jMenu1.add(jMcadastroProfissionais);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
@@ -129,6 +138,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMeditarEspecialidades);
+
+        jMeditarProfissionais = new javax.swing.JMenuItem();
+        jMeditarProfissionais.setText("Profissional");
+        jMeditarProfissionais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.EditarProfissionais().setVisible(true);
+            }
+        });
+        jMenu2.add(jMeditarProfissionais);
 
         jMenuBar1.add(jMenu2);
 
@@ -167,6 +185,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMlistarEspecialidades);
 
+        jMlistarProfissionais = new javax.swing.JMenuItem();
+        jMlistarProfissionais.setText("Profissional");
+        jMlistarProfissionais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.ListarProfissionais().setVisible(true);
+            }
+        });
+        jMenu3.add(jMlistarProfissionais);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Deletar");
@@ -203,6 +230,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMdeletarEspecialidades);
+
+        jMdeletarProfissionais = new javax.swing.JMenuItem();
+        jMdeletarProfissionais.setText("Profissional");
+        jMdeletarProfissionais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.DeletarProfissionais().setVisible(true);
+            }
+        });
+        jMenu4.add(jMdeletarProfissionais);
 
         jMenuBar1.add(jMenu4);
 
@@ -373,6 +409,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMeditarConsultas;
     private javax.swing.JMenuItem jMlistarConsultas;
     private javax.swing.JMenuItem jMdeletarConsultas;
+    private javax.swing.JMenuItem jMcadastroProfissionais;
+    private javax.swing.JMenuItem jMeditarProfissionais;
+    private javax.swing.JMenuItem jMlistarProfissionais;
+    private javax.swing.JMenuItem jMdeletarProfissionais;
     private javax.swing.JMenuItem jMcadastroEspecialidades;
     private javax.swing.JMenuItem jMeditarEspecialidades;
     private javax.swing.JMenuItem jMlistarEspecialidades;
