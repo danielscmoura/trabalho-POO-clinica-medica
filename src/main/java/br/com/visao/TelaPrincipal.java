@@ -72,6 +72,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMcadastroConvenios);
 
+        jMcadastroConsultas = new javax.swing.JMenuItem();
+        jMcadastroConsultas.setText("Consulta");
+        jMcadastroConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.CadastroConsulta().setVisible(true);
+            }
+        });
+        jMenu1.add(jMcadastroConsultas);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
@@ -91,6 +100,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMeditarConvenios);
+
+        jMeditarConsultas = new javax.swing.JMenuItem();
+        jMeditarConsultas.setText("Consulta");
+        jMeditarConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.EditarConsulta().setVisible(true);
+            }
+        });
+        jMenu2.add(jMeditarConsultas);
 
         jMenuBar1.add(jMenu2);
 
@@ -112,6 +130,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMlistarConvenios);
 
+        jMlistarConsultas = new javax.swing.JMenuItem();
+        jMlistarConsultas.setText("Consulta");
+        jMlistarConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.ListarConsultas().setVisible(true);
+            }
+        });
+        jMenu3.add(jMlistarConsultas);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Deletar");
@@ -131,6 +158,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMdeletarConvenios);
+
+        jMdeletarConsultas = new javax.swing.JMenuItem();
+        jMdeletarConsultas.setText("Consulta");
+        jMdeletarConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new br.com.visao.DeletarConsulta().setVisible(true);
+            }
+        });
+        jMenu4.add(jMdeletarConsultas);
 
         jMenuBar1.add(jMenu4);
 
@@ -259,5 +295,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMlistarConvenios;
     private javax.swing.JMenuItem jMrelatorioConsultas;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JMenuItem jMcadastroConsultas;
+    private javax.swing.JMenuItem jMeditarConsultas;
+    private javax.swing.JMenuItem jMlistarConsultas;
+    private javax.swing.JMenuItem jMdeletarConsultas;
     // End of variables declaration//GEN-END:variables
 }
