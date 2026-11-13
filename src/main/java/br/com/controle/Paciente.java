@@ -6,17 +6,23 @@
 package br.com.controle;
 
 /**
+ * Modelo (entidade) que representa uma linha da tabela "pacientes".
+ * Cada objeto guarda os dados de um paciente: a tela preenche o objeto e o
+ * ManterPaciente o grava ou o preenche a partir do banco.
  *
  * @author danielscmoura
  */
 public class Paciente {
     
+    // Campos que espelham as colunas da tabela pacientes
+    // (nome e cpf obrigatórios, cpf UNIQUE; email e telefone opcionais).
     private int id;
     private String nome;
     private String cpf;
     private String email;
     private String telefone;
     
+    // Construtores: vazio (o DAO e as telas preenchem pelos setters) e completo.
     public Paciente(){
         
     }
@@ -29,6 +35,7 @@ public class Paciente {
         this.telefone = telefone;
     }
 
+    // Getters e setters: acesso aos atributos privados (encapsulamento).
     public int getId() {
         return id;
     }

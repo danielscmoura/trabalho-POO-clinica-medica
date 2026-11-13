@@ -6,6 +6,8 @@ package br.com.controle;
  */
 public class Convenio {
 
+    // Campos que espelham as colunas da tabela convenios
+    // (nome é obrigatório e UNIQUE; telefone é opcional).
     private int id;
     private String nome;
     private String telefone;
@@ -21,6 +23,7 @@ public class Convenio {
         this.telefone = telefone;
     }
 
+    // Getters e setters: acesso aos atributos privados (encapsulamento).
     public int getId() {
         return id;
     }

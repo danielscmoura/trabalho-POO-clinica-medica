@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
  * A tabela tem a chave estrangeira id_especialidade -> especialidades(id).
  * Nas consultas é feito INNER JOIN com "especialidades" para trazer o NOME
  * da especialidade, e não apenas o código.
+ * A tabela também é referenciada pela FK consultas.id_profissional, por isso
+ * um profissional que já tem consultas não pode ser excluído.
  *
  * Os métodos que alteram o banco devolvem true quando a operação deu certo,
  * para a tela saber se deve limpar os campos / atualizar a tabela.
@@ -25,6 +27,8 @@ import javax.swing.JOptionPane;
 public class ManterProfissional extends DAO {
 
     // SELECT base com o JOIN, reaproveitado nas pesquisas
+    // Os apelidos (AS id_especialidade, AS nome_especialidade) diferenciam e.id e
+    // e.nome de p.id e p.nome, que têm o mesmo nome de coluna nas duas tabelas.
     private static final String SELECT_COM_JOIN
             = "SELECT p.id, p.nome, p.email, "
             + "       e.id AS id_especialidade, e.nome AS nome_especialidade "
@@ -34,16 +38,26 @@ public class ManterProfissional extends DAO {
     // ------------------------------------------------------------------
     // C - CREATE
     // ------------------------------------------------------------------
+    /**
+     * Cadastra um novo profissional.
+     * Regras (dadosValidos): nome obrigatório com até 100 caracteres, e-mail
+     * opcional mas em formato válido, e especialidade selecionada.
+     * Se a especialidade tiver sido excluída nesse meio-tempo, o MySQL recusa
+     * pela FK (erro 1452) e o método avisa o usuário.
+     * Retorna true se gravou e false se alguma regra falhou; outros erros são repassados.
+     */
     public boolean inserirProfissional(Profissional p) throws Exception {
         if (!dadosValidos(p)) {
             return false;
         }
         try {
             abrirBanco();
+            // INSERT com ? (PreparedStatement evita SQL injection); o id vem do AUTO_INCREMENT.
             pst = con.prepareStatement(
                     "INSERT INTO profissionais (nome, email, id_especialidade) VALUES (?, ?, ?)");
             pst.setString(1, p.getNome());
             pst.setString(2, emailOuNulo(p.getEmail()));
+            // Na FK id_especialidade vai só o id do objeto Especialidade associado.
             pst.setInt(3, p.getEspecialidade().getId());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Profissional inserido com sucesso!");
@@ -62,6 +76,13 @@ public class ManterProfissional extends DAO {
     // ------------------------------------------------------------------
     // U - UPDATE
     // ------------------------------------------------------------------
+    /**
+     * Altera nome, e-mail e especialidade do profissional identificado pelo id.
+     * Aplica as mesmas validações do cadastro. Retorna false (com mensagem) se
+     * nenhum profissional foi selecionado, se a validação falhar, se o id não
+     * existir mais ou se a especialidade não existir (FK, erro 1452).
+     * Retorna true se alterou; outros erros são repassados.
+     */
     public boolean editarProfissional(Profissional p) throws Exception {
         if (p.getId() == 0) {
             JOptionPane.showMessageDialog(null, "Selecione um profissional para alterar.");
@@ -78,6 +99,7 @@ public class ManterProfissional extends DAO {
             pst.setString(2, emailOuNulo(p.getEmail()));
             pst.setInt(3, p.getEspecialidade().getId());
             pst.setInt(4, p.getId());
+            // executeUpdate devolve quantas linhas foram afetadas; 0 = o id não existe mais.
             if (pst.executeUpdate() == 0) {
                 JOptionPane.showMessageDialog(null, "Profissional não encontrado!");
                 return false;
@@ -85,6 +107,7 @@ public class ManterProfissional extends DAO {
             JOptionPane.showMessageDialog(null, "Profissional alterado com sucesso!");
             return true;
         } catch (SQLException e) {
+            // 1452 = a especialidade escolhida não existe mais (violação da FK).
             if (e.getErrorCode() == 1452) {
                 JOptionPane.showMessageDialog(null, "A especialidade selecionada não existe mais. Atualize a tela.");
                 return false;
@@ -98,6 +121,12 @@ public class ManterProfissional extends DAO {
     // ------------------------------------------------------------------
     // D - DELETE
     // ------------------------------------------------------------------
+    /**
+     * Exclui o profissional pelo id.
+     * Retorna false (com mensagem) se nenhum foi selecionado, se o id não existe
+     * mais ou se ele tem consultas, caso em que a FK consultas.id_profissional
+     * bloqueia a exclusão (erro 1451). Retorna true se excluiu; outros erros são repassados.
+     */
     public boolean deletarProfissional(Profissional p) throws Exception {
         if (p.getId() == 0) {
             JOptionPane.showMessageDialog(null, "Selecione um profissional para excluir.");
@@ -134,6 +163,7 @@ public class ManterProfissional extends DAO {
     public boolean pesquisarProfissional(Profissional p) throws Exception {
         try {
             abrirBanco();
+            // Reaproveita o SELECT com JOIN e acrescenta o filtro pela chave primária.
             pst = con.prepareStatement(SELECT_COM_JOIN + "WHERE p.id = ?");
             pst.setInt(1, p.getId());
             rs = pst.executeQuery();
@@ -157,6 +187,10 @@ public class ManterProfissional extends DAO {
         ArrayList<Profissional> profissionais = new ArrayList<>();
         try {
             abrirBanco();
+            // (? = 0 OR p.id_especialidade = ?): se o id passado for 0, a primeira
+            // condição é verdadeira e o filtro de especialidade é ignorado; por isso
+            // o mesmo valor preenche dois ?. COALESCE(p.email, '') mantém no
+            // resultado os profissionais sem e-mail (NULL LIKE '%%' não é verdadeiro).
             pst = con.prepareStatement(SELECT_COM_JOIN
                     + "WHERE p.nome LIKE ? AND COALESCE(p.email, '') LIKE ? "
                     + "AND (? = 0 OR p.id_especialidade = ?) "
@@ -166,6 +200,7 @@ public class ManterProfissional extends DAO {
             pst.setInt(3, idEspecialidade);
             pst.setInt(4, idEspecialidade);
             rs = pst.executeQuery();
+            // Cada linha do resultado vira um objeto Profissional na lista.
             while (rs.next()) {
                 profissionais.add(montarProfissional(rs));
             }
@@ -196,6 +231,8 @@ public class ManterProfissional extends DAO {
     }
 
     // Validação dos campos obrigatórios
+    // Os limites de 100 caracteres são o tamanho das colunas VARCHAR(100); o e-mail
+    // só é conferido se foi preenchido. Mostra a mensagem do primeiro problema e retorna false.
     private boolean dadosValidos(Profissional p) {
         if (p.getNome() == null || p.getNome().isBlank()) {
             JOptionPane.showMessageDialog(null, "Informe o nome do profissional.");

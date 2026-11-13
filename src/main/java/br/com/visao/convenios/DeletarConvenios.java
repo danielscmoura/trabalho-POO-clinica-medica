@@ -15,13 +15,21 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /** Tela Swing que localiza um convênio pelo ID e confirma sua exclusão. */
+// Mostra o campo ID com o botão Buscar, os dados do convênio (só leitura) para conferir e os botões Excluir, Limpar e Fechar.
+// Usa ManterConvenio: pesquisarConvenio() para localizar o registro e deletarConvenio() para o DELETE.
 public class DeletarConvenios extends JFrame {
 
+    // Campos: ID a buscar e nome/telefone exibidos só para conferência.
     private final JTextField campoId = new JTextField(8);
     private final JTextField campoNome = new JTextField(25);
     private final JTextField campoTelefone = new JTextField(20);
+    // Convênio encontrado pela última busca bem-sucedida (null = nenhum); é ele que será excluído.
     private Convenio convenioSelecionado;
 
+    /**
+     * Construtor: define o título, faz o X fechar só esta janela (DISPOSE_ON_CLOSE),
+     * monta os componentes, ajusta o tamanho ao conteúdo (pack) e centraliza.
+     */
     public DeletarConvenios() {
         setTitle("Excluir Convênio");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,6 +43,8 @@ public class DeletarConvenios extends JFrame {
         campoNome.setEditable(false);
         campoTelefone.setEditable(false);
 
+        // Painel de campos com GridBagLayout: cada componente numa célula (gridx = coluna, gridy = linha),
+        // com 8 px de margem (insets) e alinhado à esquerda (WEST).
         JPanel campos = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
         restricoes.insets = new Insets(8, 8, 8, 8);
@@ -42,6 +52,7 @@ public class DeletarConvenios extends JFrame {
 
         restricoes.gridx = 0;
         restricoes.gridy = 0;
+        // Linha 0: ID do convênio e botão Buscar, que chama buscar().
         campos.add(new JLabel("ID do convênio:"), restricoes);
         restricoes.gridx = 1;
         campos.add(campoId, restricoes);
@@ -53,6 +64,7 @@ public class DeletarConvenios extends JFrame {
 
         restricoes.gridx = 0;
         restricoes.gridy = 1;
+        // Linhas 1 e 2: Nome e Telefone ocupando as colunas 1 e 2 (gridwidth = 2).
         campos.add(new JLabel("Nome:"), restricoes);
         restricoes.gridx = 1;
         restricoes.gridwidth = 2;
@@ -66,6 +78,7 @@ public class DeletarConvenios extends JFrame {
         restricoes.gridwidth = 2;
         campos.add(campoTelefone, restricoes);
 
+        // Excluir chama excluir(), Limpar chama limpar() e Fechar chama dispose().
         JButton botaoExcluir = new JButton("Excluir");
         botaoExcluir.addActionListener(e -> excluir());
         JButton botaoLimpar = new JButton("Limpar");
@@ -73,11 +86,13 @@ public class DeletarConvenios extends JFrame {
         JButton botaoFechar = new JButton("Fechar");
         botaoFechar.addActionListener(e -> dispose());
 
+        // FlowLayout(RIGHT): botões em fila, alinhados à direita.
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         botoes.add(botaoExcluir);
         botoes.add(botaoLimpar);
         botoes.add(botaoFechar);
 
+        // O JFrame usa BorderLayout por padrão: campos no CENTRO e botões no SUL (embaixo).
         add(campos, BorderLayout.CENTER);
         add(botoes, BorderLayout.SOUTH);
     }
@@ -90,6 +105,8 @@ public class DeletarConvenios extends JFrame {
             return;
         }
 
+        // Objeto só com o ID; se encontrar o registro, o DAO preenche nome e telefone nele
+        // (se não encontrar, ele mesmo avisa "Convênio não encontrado!").
         Convenio convenio = new Convenio();
         convenio.setId(idInformado);
 
@@ -109,6 +126,7 @@ public class DeletarConvenios extends JFrame {
 
     /** Pede confirmação ao usuário e solicita a exclusão do convênio selecionado. */
     private void excluir() {
+        // Sem uma busca bem-sucedida antes, não há o que excluir.
         if (convenioSelecionado == null) {
             JOptionPane.showMessageDialog(this, "Busque um convênio antes de excluir.");
             return;

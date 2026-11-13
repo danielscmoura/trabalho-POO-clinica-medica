@@ -15,11 +15,15 @@ package br.com.controle;
  */
 public class Profissional {
 
+    // Campos que espelham a tabela profissionais; a coluna id_especialidade
+    // é representada pelo objeto especialidade (ver comentário acima).
     private int id;
     private String nome;
     private String email;
     private Especialidade especialidade;
 
+    // Construtores: vazio (preenchido pelos setters) e completo (usado pelo DAO
+    // ao montar o profissional com a especialidade vinda do JOIN).
     public Profissional() {
 
     }
@@ -31,6 +35,7 @@ public class Profissional {
         this.especialidade = especialidade;
     }
 
+    // Getters e setters.
     public int getId() {
         return id;
     }

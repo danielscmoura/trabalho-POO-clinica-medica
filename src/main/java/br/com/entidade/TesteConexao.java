@@ -6,6 +6,9 @@
 package br.com.entidade;
 
 /**
+ * Classe reservada para testar a conexão com o banco. Está vazia e não é
+ * usada pelo sistema. Na prática, o teste de conexão acontece no
+ * DAO.abrirBanco(), que imprime "Conectado ao Banco!" no console ao conectar.
  *
  * @author danielscmoura
  */

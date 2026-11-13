@@ -7,11 +7,17 @@ import javax.swing.JOptionPane;
 
 /**
  * Centraliza as operações CRUD de Convênio e usa a conexão herdada de DAO.
+ *
+ * Tabela: convenios (nome obrigatório e UNIQUE, telefone opcional). Ela é
+ * referenciada pela FK consultas.id_convenio, que aceita NULL para as
+ * consultas particulares (sem convênio).
  */
 public class ManterConvenio extends DAO {
 
     /**
      * Valida os dados, evita nomes duplicados e insere um novo convênio no banco.
+     * Se o nome estiver vazio ou já existir, mostra a mensagem e não grava nada.
+     * Erros de banco são repassados (throws) para a tela tratar.
      */
     public void inserirConvenio(Convenio convenio) throws Exception {
         // Interrompe o cadastro antes de acessar o banco se o nome estiver vazio.
@@ -48,6 +54,8 @@ public class ManterConvenio extends DAO {
 
     /**
      * Atualiza nome e telefone do convênio selecionado, sem permitir duplicidade de nome.
+     * Sem convênio selecionado (id 0), com nome vazio ou com nome de outro convênio,
+     * mostra a mensagem e não altera nada.
      */
     public void editarConvenio(Convenio convenio) throws Exception {
         // O ID identifica qual registro existente receberá a alteração.
@@ -73,6 +81,7 @@ public class ManterConvenio extends DAO {
                 return;
             }
 
+            // O WHERE id = ? garante que só a linha desse convênio seja alterada.
             pst = con.prepareStatement(
                     "UPDATE convenios SET nome = ?, telefone = ? WHERE id = ?");
             pst.setString(1, convenio.getNome());
@@ -120,6 +129,7 @@ public class ManterConvenio extends DAO {
     /**
      * Busca um convênio pelo ID e preenche o mesmo objeto recebido como parâmetro.
      * Retorna true quando encontra o registro e false caso contrário.
+     * Quando não encontra, também avisa o usuário com uma mensagem.
      */
     public boolean pesquisarConvenio(Convenio convenio) throws Exception {
         try {
@@ -152,6 +162,8 @@ public class ManterConvenio extends DAO {
 
         try {
             abrirBanco();
+            // COALESCE(telefone, '') troca NULL por texto vazio: sem isso, convênios sem
+            // telefone sumiriam do resultado, porque NULL LIKE '%%' não é verdadeiro.
             pst = con.prepareStatement(
                     "SELECT id, nome, telefone FROM convenios "
                     + "WHERE nome LIKE ? AND COALESCE(telefone, '') LIKE ? "

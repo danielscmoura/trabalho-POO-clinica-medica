@@ -25,13 +25,22 @@ import javax.swing.border.EmptyBorder;
 /**
  * Tela Swing do relatório: permite filtrar consultas por paciente ou profissional,
  * exibe o resultado do JOIN e informa o total encontrado.
+ * Mostra as opções Paciente/Profissional, o campo do nome, o botão Gerar relatório,
+ * a tabela com ID, paciente, profissional, especialidade, convênio, data, horário e
+ * situação, o total de consultas e os botões Limpar e Fechar.
+ * Os dados vêm da classe RelatorioConsultas (buscarPorPaciente ou buscarPorProfissional),
+ * que junta as tabelas consultas, pacientes, profissionais, especialidades e convênios.
  */
 public class TelaRelatorioConsultas extends JFrame {
 
+    // Componentes do filtro (as duas opções e o campo do nome) e o rótulo que mostra o total.
     private final JRadioButton opcaoPaciente = new JRadioButton("Paciente", true);
     private final JRadioButton opcaoProfissional = new JRadioButton("Profissional");
     private final JTextField campoNome = new JTextField(25);
     private final JLabel labelTotal = new JLabel("Total de consultas: 0");
+    // Modelo da tabela com as 8 colunas do relatório, começando sem linhas. A classe anônima
+    // sobrescreve dois métodos: getColumnClass diz que a coluna 0 (ID) é Integer, para ser
+    // ordenada como número, e isCellEditable bloqueia a edição das células.
     private final DefaultTableModel modeloTabela = new DefaultTableModel(
             new Object[]{"ID", "Paciente", "Profissional", "Especialidade",
                 "Convênio", "Data", "Horário", "Situação"}, 0) {
@@ -46,6 +55,10 @@ public class TelaRelatorioConsultas extends JFrame {
         }
     };
 
+    /**
+     * Construtor: define o título, faz o X fechar só esta janela (DISPOSE_ON_CLOSE),
+     * monta os componentes, ajusta o tamanho ao conteúdo (pack) e centraliza.
+     */
     public TelaRelatorioConsultas() {
         setTitle("Relatório de Consultas");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,6 +74,8 @@ public class TelaRelatorioConsultas extends JFrame {
         grupoFiltro.add(opcaoPaciente);
         grupoFiltro.add(opcaoProfissional);
 
+        // Painel de filtros com GridBagLayout: cada componente vai numa célula (gridx = coluna,
+        // gridy = linha), alinhado à esquerda (WEST) e com 6 px de margem (insets).
         JPanel filtros = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
         restricoes.insets = new Insets(6, 6, 6, 6);
@@ -68,6 +83,7 @@ public class TelaRelatorioConsultas extends JFrame {
 
         restricoes.gridx = 0;
         restricoes.gridy = 0;
+        // Linha 0: rótulo "Filtrar por:" e as duas opções.
         filtros.add(new JLabel("Filtrar por:"), restricoes);
         restricoes.gridx = 1;
         filtros.add(opcaoPaciente, restricoes);
@@ -76,11 +92,13 @@ public class TelaRelatorioConsultas extends JFrame {
 
         restricoes.gridx = 0;
         restricoes.gridy = 1;
+        // Linha 1: rótulo e campo do nome; gridwidth = 2 faz o campo ocupar as colunas 1 e 2.
         filtros.add(new JLabel("Nome:"), restricoes);
         restricoes.gridx = 1;
         restricoes.gridwidth = 2;
         filtros.add(campoNome, restricoes);
 
+        // Botão Gerar relatório: chama gerarRelatorio() e fica na coluna 3 da linha 1 (gridwidth volta a 1).
         JButton botaoGerar = new JButton("Gerar relatório");
         botaoGerar.addActionListener(e -> gerarRelatorio());
         restricoes.gridx = 3;
@@ -90,13 +108,17 @@ public class TelaRelatorioConsultas extends JFrame {
         // O sorter permite ordenar as colunas ao clicar no cabeçalho da JTable.
         JTable tabela = new JTable(modeloTabela);
         tabela.setAutoCreateRowSorter(true);
+        // Tamanho preferido da área visível da tabela (1000 x 300 px), usado pelo pack() para dimensionar a janela.
         tabela.setPreferredScrollableViewportSize(new Dimension(1000, 300));
 
+        // Limpar chama limpar(); Fechar chama dispose(), que fecha só esta janela.
         JButton botaoLimpar = new JButton("Limpar");
         botaoLimpar.addActionListener(e -> limpar());
         JButton botaoFechar = new JButton("Fechar");
         botaoFechar.addActionListener(e -> dispose());
 
+        // Rodapé em BorderLayout: total à esquerda (WEST) e, à direita (EAST), um painel
+        // FlowLayout com os botões lado a lado.
         JPanel rodape = new JPanel(new BorderLayout());
         rodape.setBorder(new EmptyBorder(0, 12, 0, 12));
         rodape.add(labelTotal, BorderLayout.WEST);
@@ -105,6 +127,8 @@ public class TelaRelatorioConsultas extends JFrame {
         botoes.add(botaoFechar);
         rodape.add(botoes, BorderLayout.EAST);
 
+        // O JFrame usa BorderLayout por padrão: filtros no NORTE, tabela com barra de rolagem
+        // (JScrollPane) no CENTRO e rodapé no SUL.
         add(filtros, BorderLayout.NORTH);
         add(new JScrollPane(tabela), BorderLayout.CENTER);
         add(rodape, BorderLayout.SOUTH);
@@ -122,6 +146,7 @@ public class TelaRelatorioConsultas extends JFrame {
             return;
         }
 
+        // Apaga o resultado anterior antes de preencher a tabela de novo.
         modeloTabela.setRowCount(0);
 
         try {
@@ -151,6 +176,7 @@ public class TelaRelatorioConsultas extends JFrame {
                 JOptionPane.showMessageDialog(this, "Nenhuma consulta encontrada.");
             }
         } catch (Exception e) {
+            // Falha de conexão ou de SQL: mostra uma caixa de erro.
             JOptionPane.showMessageDialog(this,
                     "Erro ao gerar relatório: " + e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);

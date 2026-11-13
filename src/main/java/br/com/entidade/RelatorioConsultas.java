@@ -7,9 +7,15 @@ import java.util.ArrayList;
 /**
  * Executa as consultas SQL do relatório de consultas médicas.
  * A classe usa JOIN para transformar IDs em informações compreensíveis ao usuário.
+ *
+ * Usada pela TelaRelatorioConsultas. Parte da tabela consultas e liga pacientes,
+ * profissionais, especialidades (através de profissionais.id_especialidade) e
+ * convenios. Cada linha do resultado vira um LinhaRelatorioConsulta.
  */
 public class RelatorioConsultas extends DAO {
 
+    // Formatos de exibição: data no padrão brasileiro e horário sem os segundos.
+    // static final: uma única instância, compartilhada e imutável.
     private static final DateTimeFormatter FORMATO_DATA
             = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter FORMATO_HORARIO
@@ -30,15 +36,20 @@ public class RelatorioConsultas extends DAO {
     /**
      * Monta e executa o JOIN usado pelo relatório. O boolean escolhe de forma segura
      * se o filtro será aplicado ao paciente ou ao profissional.
+     * Retorna as linhas ordenadas por data e horário (lista vazia se nada for
+     * encontrado); erros de banco são repassados para a tela.
      */
     private ArrayList<LinhaRelatorioConsulta> buscar(String nome, boolean filtrarPorPaciente)
             throws Exception {
         ArrayList<LinhaRelatorioConsulta> linhas = new ArrayList<>();
         // Define qual coluna receberá o filtro sem receber texto SQL do usuário.
+        // O nome digitado vai sempre no ?, nunca concatenado ao SQL (evita SQL injection).
         String campoFiltro = filtrarPorPaciente ? "pa.nome" : "pr.nome";
 
         // INNER JOIN recupera os dados obrigatórios da consulta; LEFT JOIN mantém
         // também as consultas particulares, que não possuem convênio.
+        // A especialidade vem em dois passos (consulta -> profissional -> especialidade),
+        // e o COALESCE mostra 'Particular' no lugar do nome nulo do convênio.
         String sql = "SELECT c.id, "
                 + "pa.nome AS paciente, "
                 + "pr.nome AS profissional, "

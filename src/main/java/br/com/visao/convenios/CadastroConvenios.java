@@ -15,11 +15,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /** Tela Swing responsável pelo cadastro de novos convênios. */
+// Mostra os campos Nome (obrigatório, marcado com *) e Telefone e os botões Cadastrar, Limpar e Fechar.
+// A validação, a checagem de nome repetido e o INSERT ficam em ManterConvenio.inserirConvenio().
 public class CadastroConvenios extends JFrame {
 
+    // Campos de texto do formulário: nome do convênio e telefone (opcional).
     private final JTextField campoNome = new JTextField(25);
     private final JTextField campoTelefone = new JTextField(20);
 
+    /**
+     * Construtor: define o título, faz o X fechar só esta janela (DISPOSE_ON_CLOSE),
+     * monta os componentes, ajusta o tamanho ao conteúdo (pack) e centraliza.
+     */
     public CadastroConvenios() {
         setTitle("Cadastro de Convênio");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -33,11 +40,13 @@ public class CadastroConvenios extends JFrame {
         // GridBagLayout organiza rótulos e campos em linhas e colunas.
         JPanel campos = new JPanel(new GridBagLayout());
         GridBagConstraints restricoes = new GridBagConstraints();
+        // gridx = coluna e gridy = linha de cada componente; insets dá 8 px de margem e anchor WEST alinha à esquerda.
         restricoes.insets = new Insets(8, 8, 8, 8);
         restricoes.anchor = GridBagConstraints.WEST;
 
         restricoes.gridx = 0;
         restricoes.gridy = 0;
+        // Linha 0: rótulo Nome (coluna 0) e campo (coluna 1); o * indica campo obrigatório.
         campos.add(new JLabel("Nome:*"), restricoes);
 
         restricoes.gridx = 1;
@@ -45,11 +54,13 @@ public class CadastroConvenios extends JFrame {
 
         restricoes.gridx = 0;
         restricoes.gridy = 1;
+        // Linha 1: rótulo e campo do telefone.
         campos.add(new JLabel("Telefone:"), restricoes);
 
         restricoes.gridx = 1;
         campos.add(campoTelefone, restricoes);
 
+        // Botões: Cadastrar chama cadastrar(), Limpar chama limpar() e Fechar chama dispose(), que fecha a janela.
         JButton botaoCadastrar = new JButton("Cadastrar");
         botaoCadastrar.addActionListener(e -> cadastrar());
 
@@ -59,11 +70,13 @@ public class CadastroConvenios extends JFrame {
         JButton botaoFechar = new JButton("Fechar");
         botaoFechar.addActionListener(e -> dispose());
 
+        // FlowLayout(RIGHT): botões em fila, na ordem do add(), alinhados à direita.
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         botoes.add(botaoCadastrar);
         botoes.add(botaoLimpar);
         botoes.add(botaoFechar);
 
+        // O JFrame usa BorderLayout por padrão: campos no CENTRO e botões no SUL (embaixo).
         add(campos, BorderLayout.CENTER);
         add(botoes, BorderLayout.SOUTH);
     }
@@ -77,8 +90,10 @@ public class CadastroConvenios extends JFrame {
 
         try {
             // A regra e o SQL ficam fora da tela, na classe ManterConvenio.
+            // O próprio ManterConvenio exibe as mensagens de sucesso, nome vazio ou nome repetido.
             new ManterConvenio().inserirConvenio(convenio);
         } catch (Exception e) {
+            // Falha de conexão ou de SQL vira uma caixa de erro.
             JOptionPane.showMessageDialog(this,
                     "Erro ao cadastrar convênio: " + e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);

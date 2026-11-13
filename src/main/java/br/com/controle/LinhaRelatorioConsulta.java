@@ -6,6 +6,10 @@ package br.com.controle;
  */
 public class LinhaRelatorioConsulta {
 
+    // Campos já prontos para exibição na JTable da TelaRelatorioConsultas.
+    // São final: o objeto é imutável (preenchido uma vez no construtor).
+    // Data e horário chegam como texto formatado (dd/MM/yyyy e HH:mm), e o
+    // convênio chega como "Particular" quando a consulta não tem convênio.
     private final int id;
     private final String paciente;
     private final String profissional;
@@ -31,6 +35,7 @@ public class LinhaRelatorioConsulta {
         this.situacao = situacao;
     }
 
+    // Só getters, sem setters: os campos são final e servem apenas para leitura.
     public int getId() {
         return id;
     }
